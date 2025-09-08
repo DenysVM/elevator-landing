@@ -7,6 +7,8 @@ import Projects from '@/pages/Projects';
 import Certifications from '@/pages/Certifications';
 import Contact from '@/pages/Contact';
 
+const basename = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -20,4 +22,4 @@ export const router = createBrowserRouter([
       { path: 'contact', element: <Contact /> }
     ]
   }
-]);
+], { basename });
