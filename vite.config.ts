@@ -1,15 +1,18 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import { qrcode } from 'vite-plugin-qrcode';
 
 const base = process.env.VITE_BASE || '/';
 
 export default defineConfig({
   base,
-  plugins: [react()],
+  plugins: [react(), qrcode()],
+  server: {
+    host: true,
+  },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src')
+      '@': '/src'
     }
   }
 });
