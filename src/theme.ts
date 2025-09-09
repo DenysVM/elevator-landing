@@ -36,4 +36,13 @@ const components = {
   }
 };
 
-export const theme = extendTheme({ config, colors, fonts, components });
+const styles = {
+  global: {
+    'html, body, #root': {
+      maxWidth: '100%',
+      overflowX: 'hidden',
+    },
+  },
+};
+
+export const theme = extendTheme({ config, colors, fonts, components, styles });

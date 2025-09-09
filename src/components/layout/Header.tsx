@@ -1,19 +1,22 @@
-import { Box, Container, Flex, HStack, IconButton, Link as CLink, Select, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, VStack } from '@chakra-ui/react';
+import { Box, Container, Flex, HStack, IconButton, Link as CLink, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, VStack } from '@chakra-ui/react';
 import { Link, useMatch } from 'react-router-dom';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useDisclosure } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 import CTAButton from '@/components/common/CTAButton';
+import LanguageMenu from '@/components/layout/LanguageMenu';
+import React from 'react';
 
 export default function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { t, i18n } = useTranslation('common');
+  const { t } = useTranslation('common');
   const isHome = !!useMatch({ path: '/', end: true });
   const isServices = !!useMatch('/services');
   const isProducts = !!useMatch('/products');
   const isProjects = !!useMatch('/projects');
   const isCerts = !!useMatch('/certifications');
   const isContact = !!useMatch('/contact');
+  const closeBtnRef = React.useRef<HTMLButtonElement | null>(null);
 
   return (
     <Box as="header" bg="white" boxShadow="sm" position="sticky" top={0} zIndex={10}>
@@ -47,13 +50,8 @@ export default function Header() {
             </CLink>
           </HStack>
           <HStack>
-            {/* Show language selector only on desktop/tablet */}
-            <Select size="sm" variant="filled" onChange={(e) => i18n.changeLanguage(e.target.value)} defaultValue={i18n.language}
-              w="72px" textAlign="center" display={{ base: 'none', md: 'block' }} borderRadius="xl">
-              <option value="uk">UK</option>
-              <option value="pl">PL</option>
-              <option value="en">EN</option>
-            </Select>
+            {/* Language selector only on desktop/tablet */}
+            <LanguageMenu display={{ base: 'none', md: 'inline-flex' }} />
             {!isContact && (
               <CTAButton
                 to="/contact"
@@ -68,23 +66,18 @@ export default function Header() {
             <IconButton aria-label="Menu" icon={isOpen ? <CloseIcon /> : <HamburgerIcon />} display={{ base: 'inline-flex', md: 'none' }} onClick={isOpen ? onClose : onOpen} />
           </HStack>
         </Flex>
-        <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xs">
+        <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xs" initialFocusRef={closeBtnRef} preserveScrollBarGap={false}>
           <DrawerOverlay />
           <DrawerContent>
             <DrawerHeader>
               <Flex align="center" justify="space-between" gap={2}>
-                <Box as="span" fontWeight={700}>{t('nav.menu', { defaultValue: 'Меню' })}</Box>
+                <Box as="span" fontWeight={700}>{t('nav.menu', { defaultValue: '�?��?�?' })}</Box>
                 <HStack spacing={2}>
                   {/* Mobile language selector aligned near menu title */}
-                  <Select size="sm" variant="filled" onChange={(e) => i18n.changeLanguage(e.target.value)} defaultValue={i18n.language}
-                    w="72px" textAlign="center" display={{ base: 'block', md: 'none' }} borderRadius="xl">
-                    <option value="uk">UK</option>
-                    <option value="pl">PL</option>
-                    <option value="en">EN</option>
-                  </Select>
+                  <LanguageMenu display={{ base: 'inline-flex', md: 'none' }} />
                   {/* Close button aligned to header middle, semi-transparent */}
                   <IconButton
-                    aria-label={`${t('nav.menu', { defaultValue: 'Меню' })} close`}
+                    aria-label={`${t('nav.menu', { defaultValue: '�?��?�?' })} close`}
                     icon={<CloseIcon />}
                     onClick={onClose}
                     variant="ghost"
@@ -93,6 +86,7 @@ export default function Header() {
                     _hover={{ opacity: 1, bg: 'blackAlpha.200' }}
                     size="sm"
                     borderRadius="xl"
+                    ref={closeBtnRef}
                   />
                 </HStack>
               </Flex>
@@ -131,3 +125,4 @@ export default function Header() {
     </Box>
   );
 }
+
