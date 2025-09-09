@@ -27,10 +27,19 @@ export default function ContactForm() {
         <FormLabel>{t('contact.form.message_label')}</FormLabel>
         <Textarea name="message" rows={5} placeholder={t('contact.form.message_placeholder')} />
       </FormControl>
-      <Button type="submit" colorScheme="brand" isLoading={loading} whiteSpace="normal" height="auto">
+      <Button
+        type="submit"
+        colorScheme="brand"
+        isLoading={loading}
+        whiteSpace="normal"
+        height="auto"
+        size={{ base: 'lg', md: 'md' }}
+        w={{ base: '100%', md: 'auto' }}
+        alignSelf={{ base: 'stretch', md: 'flex-start' }}
+        py={{ base: 6, md: 4 }}
+      >
         {t('contact.form.submit')}
       </Button>
     </VStack>
   );
 }
-

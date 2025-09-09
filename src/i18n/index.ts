@@ -9,7 +9,8 @@ void i18n
   .init({
     resources: {
       en: { common: en },
-      uk: { common: uk },
+      // Ensure missing UA keys are present explicitly
+      uk: { common: { ...uk, 'nav.menu': 'Меню' } },
       pl: { common: pl }
     },
     lng: 'uk',

@@ -1,4 +1,4 @@
-import { Box, Container, Flex, HStack, IconButton, Link as CLink, Select, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, DrawerCloseButton, VStack } from '@chakra-ui/react';
+import { Box, Container, Flex, HStack, IconButton, Link as CLink, Select, Drawer, DrawerOverlay, DrawerContent, DrawerHeader, DrawerBody, VStack } from '@chakra-ui/react';
 import { Link, useMatch } from 'react-router-dom';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useDisclosure } from '@chakra-ui/react';
@@ -47,21 +47,56 @@ export default function Header() {
             </CLink>
           </HStack>
           <HStack>
+            {/* Show language selector only on desktop/tablet */}
             <Select size="sm" variant="filled" onChange={(e) => i18n.changeLanguage(e.target.value)} defaultValue={i18n.language}
-              w="72px" textAlign="center">
+              w="72px" textAlign="center" display={{ base: 'none', md: 'block' }} borderRadius="xl">
               <option value="uk">UK</option>
               <option value="pl">PL</option>
               <option value="en">EN</option>
             </Select>
-            <CTAButton to="/contact" size="sm" px={4} py={2} display={{ base: 'none', md: 'inline-flex' }}>{t('cta.contact')}</CTAButton>
+            {!isContact && (
+              <CTAButton
+                to="/contact"
+                size="sm"
+                px={4}
+                py={2}
+                display={{ base: 'none', md: 'inline-flex' }}
+              >
+                {t('cta.contact')}
+              </CTAButton>
+            )}
             <IconButton aria-label="Menu" icon={isOpen ? <CloseIcon /> : <HamburgerIcon />} display={{ base: 'inline-flex', md: 'none' }} onClick={isOpen ? onClose : onOpen} />
           </HStack>
         </Flex>
         <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xs">
           <DrawerOverlay />
           <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerHeader>
+              <Flex align="center" justify="space-between" gap={2}>
+                <Box as="span" fontWeight={700}>{t('nav.menu', { defaultValue: 'Меню' })}</Box>
+                <HStack spacing={2}>
+                  {/* Mobile language selector aligned near menu title */}
+                  <Select size="sm" variant="filled" onChange={(e) => i18n.changeLanguage(e.target.value)} defaultValue={i18n.language}
+                    w="72px" textAlign="center" display={{ base: 'block', md: 'none' }} borderRadius="xl">
+                    <option value="uk">UK</option>
+                    <option value="pl">PL</option>
+                    <option value="en">EN</option>
+                  </Select>
+                  {/* Close button aligned to header middle, semi-transparent */}
+                  <IconButton
+                    aria-label={`${t('nav.menu', { defaultValue: 'Меню' })} close`}
+                    icon={<CloseIcon />}
+                    onClick={onClose}
+                    variant="ghost"
+                    bg="blackAlpha.100"
+                    opacity={0.7}
+                    _hover={{ opacity: 1, bg: 'blackAlpha.200' }}
+                    size="sm"
+                    borderRadius="xl"
+                  />
+                </HStack>
+              </Flex>
+            </DrawerHeader>
             <DrawerBody>
               <VStack as="nav" spacing={2} align="stretch">
                 <CLink as={Link} to="/" onClick={onClose} px={3} py={3} borderRadius="lg" fontWeight={600}
